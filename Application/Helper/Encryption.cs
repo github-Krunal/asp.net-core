@@ -33,10 +33,6 @@ namespace Application.Helper
                 }
             }
             return password;
-
-            //password += key;
-            //var passwordBytes = Encoding.UTF8.GetBytes(password);
-            //return Convert.ToBase64String(passwordBytes);
         }
         public static string decryption(string cipherText)
         {
