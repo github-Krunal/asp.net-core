@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Helper
 {
@@ -12,10 +9,10 @@ namespace Application.Helper
     {
         public static string key = "6a7d3dd0-4993-4700-ade9-edc596675617";
 
-        public static string encryption(string password)
+        public static string PasswordEncryption(string cipherText)
         {
-            if (string.IsNullOrEmpty(password)) return "";
-            byte[] cipherBytes = Encoding.Unicode.GetBytes(password);
+            if (string.IsNullOrEmpty(cipherText)) return "";
+            byte[] cipherBytes = Encoding.Unicode.GetBytes(cipherText);
 
             using (Aes encryptor = Aes.Create())
             {
@@ -29,12 +26,12 @@ namespace Application.Helper
                         cs.Write(cipherBytes, 0, cipherBytes.Length);
                         cs.Close();
                     }
-                    password = Convert.ToBase64String(ms.ToArray());
+                    cipherText = Convert.ToBase64String(ms.ToArray());
                 }
             }
-            return password;
+            return cipherText;
         }
-        public static string decryption(string cipherText)
+        public static string PasswordDecryption(string cipherText)
         {
             cipherText = cipherText.Replace(" ", "+");
             byte[] cipherBytes = Convert.FromBase64String(cipherText);

@@ -8,7 +8,8 @@ namespace Application.Repository
 {
     public class RegistrationRepository : IRegistration
     {
-        private ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly PasswordGenerator _password_generator = new PasswordGenerator();
         public RegistrationRepository(ApplicationDbContext context)
         {
             _dbContext = context;
@@ -16,21 +17,21 @@ namespace Application.Repository
 
         public bool RegisterUser(Registration register)
         {
-            register.Password =Encryption.encryption(register.Password);
+            register.Password = Encryption.PasswordEncryption(_password_generator.GeneratePassword());
             _dbContext.Registration.Add(register);
             _dbContext.SaveChanges();
             return true;
         }
         public IEnumerable<Registration> GetRegisteredsUser()
         {
-            return getAllRegistartion();
+            return GetAllRegistartion();
         }
-        private IEnumerable<Registration> getAllRegistartion()
+        private IEnumerable<Registration> GetAllRegistartion()
         {
              var a =_dbContext.Registration.ToList();
             foreach(Registration element in  a)
             {
-              element.Password= Encryption.decryption(element.Password);
+              element.Password= Encryption.PasswordDecryption(element.Password);
             }
 
             //for(var i = 0; i <= a.Count; i++)
