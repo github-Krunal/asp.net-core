@@ -11,5 +11,7 @@ namespace Application.Routes
 
         public const  string _registration = _baseApi + "registartion";
         public const string _registrationGetAll = _baseApi + "getAllRegistraion";
+        public const string _single_registration = _baseApi + "getSingleRegistration/{id}";
+
     }
 }

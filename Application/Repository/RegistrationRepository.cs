@@ -2,6 +2,7 @@
 using Application.Helper;
 using Application.Interface;
 using Application.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 namespace Application.Repository
@@ -15,31 +16,38 @@ namespace Application.Repository
             _dbContext = context;
         }
 
-        public bool RegisterUser(Registration register)
+        public bool Registration(Registration register)
         {
-            register.Password = Encryption.PasswordEncryption(_password_generator.GeneratePassword());
+            if(string.IsNullOrEmpty(register.Password))
+            {
+                register.Password = Encryption.PasswordEncryption(_password_generator.GeneratePassword());
+            }
+            else
+            {
+                register.Password = Encryption.PasswordEncryption(register.Password);
+            }
             _dbContext.Registration.Add(register);
             _dbContext.SaveChanges();
             return true;
         }
-        public IEnumerable<Registration> GetRegisteredsUser()
+        public IEnumerable<Registration> GetAllRegistration()
         {
-            return GetAllRegistartion();
+            var _registration_list = _dbContext.Registration.ToList();
+            return GetAllRegistartion(_registration_list);
         }
-        private IEnumerable<Registration> GetAllRegistartion()
+        private IEnumerable<Registration> GetAllRegistartion(IEnumerable<Registration> _registration_list)
         {
-             var a =_dbContext.Registration.ToList();
-            foreach(Registration element in  a)
+            foreach(Registration registration in _registration_list)
             {
-              element.Password= Encryption.PasswordDecryption(element.Password);
+                registration.Password= Encryption.PasswordDecryption(registration.Password);
             }
-
-            //for(var i = 0; i <= a.Count; i++)
-            //{
-            //    a[i].Password = Encryption.decryption(a[i].Password);
-            //}
-
-            return a;
+            return _registration_list;
         }
+        public IEnumerable<Registration> GetSingleRegistration(Guid id)
+        {
+            var _single_registartion= _dbContext.Registration.Where(registartion=> registartion.RecordID == id);
+            return GetAllRegistartion(_single_registartion);
+        }
+     
     }
 }

@@ -23,13 +23,20 @@ namespace Application.Controllers
         [Route(CustomRoutes._registration)]
         public IActionResult Registration([FromBody] Registration registration)
         {
-            return Ok(_registration.RegisterUser(registration));
+            return Ok(_registration.Registration(registration));
         }
         [HttpGet]
         [Route(CustomRoutes._registrationGetAll)]
-        public IActionResult GetRegistrations()
+        public IActionResult GetAllRegistrations()
         {
-            return Ok(_registration.GetRegisteredsUser());
+            return Ok(_registration.GetAllRegistration());
+        }
+
+        [HttpGet]
+        [Route(CustomRoutes._single_registration)]
+        public IActionResult GetSingleRegistartion(Guid id)
+        {
+            return Ok(_registration.GetSingleRegistration(id));
         }
     }
 }

@@ -17,11 +17,9 @@ namespace Application.Helper
         public string GeneratePassword()
         {
             int _password_length = _random.Next(_min_password_length, _max_password_length);
-
             do
             {
                 int number = _random.Next(1, 5);
-
                 switch (number)
                 {
                     case 1:
