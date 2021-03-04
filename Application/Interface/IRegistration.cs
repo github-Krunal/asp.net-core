@@ -9,6 +9,6 @@ namespace Application.Interface
        bool Registration(Registration register);
        IEnumerable<Registration> GetAllRegistration();
 
-        IEnumerable<Registration> GetSingleRegistration(Guid id);
+       IEnumerable<Registration> GetSingleRegistration(Guid id);
     }
 }

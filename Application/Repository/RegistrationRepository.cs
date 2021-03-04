@@ -11,6 +11,7 @@ namespace Application.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly PasswordGenerator _password_generator = new PasswordGenerator();
+        private readonly PasswordValidation _password_validation = new PasswordValidation();
         public RegistrationRepository(ApplicationDbContext context)
         {
             _dbContext = context;
@@ -24,7 +25,11 @@ namespace Application.Repository
             }
             else
             {
-                register.Password = Encryption.PasswordEncryption(register.Password);
+                //register.Password = Encryption.PasswordEncryption(register.Password);
+                if (_password_validation.validation(register))
+                {
+                    register.Password = Encryption.PasswordEncryption(register.Password);
+                }
             }
             _dbContext.Registration.Add(register);
             _dbContext.SaveChanges();
